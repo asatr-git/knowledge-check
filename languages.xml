@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<languages>
+ <lang name="C">
+  <appeared>1972qqqqqqqqqqqqqqq</appeared>
+  <creator>Dennis Ritchieqqqqqqqqqqqqqqq</creator>
+ </lang>
+ <lang name="PHP">
+  <appeared>1995qqqqqqqqqqqqqqq</appeared>
+  <creator>Rasmus Lerdorfqqqqqqqqqqqqqqq</creator>
+ </lang>
+ <lang name="Java">
+  <appeared>199712d</appeared>
+  <creator>James Gosling qqqqqqqqqqqqqqqqqq</creator>
+ </lang>
+</languages>

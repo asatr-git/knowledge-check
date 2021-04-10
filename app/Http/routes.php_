@@ -1,0 +1,70 @@
+<?php
+print 'qqq';return;
+/*
+|--------------------------------------------------------------------------
+| Routes File
+|--------------------------------------------------------------------------
+|
+| Here is where you will register all of the routes in an application.
+| It's a breeze. Simply tell Laravel the URIs it should respond to
+| and give it the controller to call when that URI is requested.
+|
+*/
+
+/*
+|--------------------------------------------------------------------------
+| Application Routes
+|--------------------------------------------------------------------------
+|
+| This route group applies the "web" middleware group to every route
+| it contains. The "web" middleware group is defined in your HTTP
+| kernel and includes session state, CSRF protection, and more.
+|
+*/
+
+Route::group(['middleware' => ['web']], function () {
+  print 'qqq'; return;
+
+//    Route::get('/schema/{element_id}', function () {
+  //      return view('jointjs.index');
+    //});
+    Route::get('/schema/{element_id}', 'SchemaController@index');
+    Route::post('/schema-ajax', 'SchemaController@save');
+    Route::get('/schema-ajax/{graph_id}', 'SchemaController@getgraph');
+
+    Route::get('/admin', function () {print 'admin';})->middleware('admin');
+    //Route::get('/admin', function () {print 'admin';});
+    Route::get('/admin/login', 'Admin\AdminLoginController@index');
+    Route::post('/admin/login', 'Admin\AdminLoginController@login');
+
+    Route::get('/admin/users', 'Admin\UserController@index')->middleware('admin');
+    //Route::get('/admin/users', 'TaskController@index')->middleware('admin');
+
+    //Route::get('/admin/users', function () {print 'users';})->middleware('admin');
+
+    Route::get('/', function () {
+        return view('welcome');
+    })->middleware('guest');
+
+    Route::get('/tasks', 'TaskController@index');
+    Route::post('/task', 'TaskController@store');
+    Route::delete('/task/{task}', 'TaskController@destroy');
+    Route::post('ulogin', 'UloginController@login');
+
+    Route::get('/elements', 'ElementController@index');
+
+    Route::get('/elements/{element_id}', 'ElementController@element');
+    //Route::get('/element/{element_id}', 'ElementController@oneelement');
+    Route::get('/del-element/{element_id}', 'ElementController@delelement');
+    //Route::get('/elements/{graph_id}', 'AjaxController@getgraph');
+
+
+    Route::post('/elements/{element_id?}', 'ElementController@addelement');
+
+    Route::get('/element/{element_id}', function ($element_id) {
+        print $element_id;
+    });
+
+    Route::auth();
+
+});
