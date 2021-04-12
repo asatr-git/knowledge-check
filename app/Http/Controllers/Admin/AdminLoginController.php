@@ -36,7 +36,6 @@ class AdminLoginController extends Controller
      */
     public function index(Request $request)
     {
-        print "AdminLogin index";
         return view('admin.login');
     }
 

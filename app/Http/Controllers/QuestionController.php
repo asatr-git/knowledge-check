@@ -21,8 +21,14 @@ class QuestionController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function index(Request $request)
+    public function index($psw='')
     {
+        $user = DB::select("select u.name  from checkups c left JOIN users u on c.user_id=u.id where c.psw='".$psw."'");
+        if (count($user) == 0) {
+            // There no test with this psw
+            return view('welcome');
+        }
+
         $questions = DB::select("select * from questions order by sort_order");
         foreach ($questions as $question){
             $answers = DB::select("select * from answers where question_id=".$question->id." order by sort_order");
@@ -30,17 +36,19 @@ class QuestionController extends Controller
         }        
 
         return view('question.index', [
+            'psw' => $psw,
             'questions' => $questions,
+            'user_name' => $user[0]->name,
         ]);
     }
 
-    public function next(Request $request)
-    {
-        $current_sortorder = 0;
-        $first_article = DB::select("select * from articles  where sort_order > ".$current_sortorder." order by sort_order limit 1");
-        return view('article.index', [
-            'article' => $first_article,
-        ]);
-    }
+    // public function next(Request $request)
+    // {
+    //     $current_sortorder = 0;
+    //     $first_article = DB::select("select * from articles  where sort_order > ".$current_sortorder." order by sort_order limit 1");
+    //     return view('article.index', [
+    //         'article' => $first_article,
+    //     ]);
+    // }
 
 }

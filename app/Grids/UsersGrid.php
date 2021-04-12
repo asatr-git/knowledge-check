@@ -2,6 +2,8 @@
 
 namespace App\Grids;
 
+use Illuminate\Support\Facades\DB;
+
 use Closure;
 use Leantony\Grid\Grid;
 
@@ -47,6 +49,10 @@ class UsersGrid extends Grid implements UsersGridInterface
     */
     public function setColumns()
     {
+        function qqq($userId){
+            $articles = DB::select("select * from questions order by sort_order");
+            return '<a onclick="alert(\'ok\')" href="/admin/checkup-create/'.$userId.'">Создать</a>';
+        }
         $this->columns = [
 		    "id" => [
 		        "label" => "ID",
@@ -62,7 +68,7 @@ class UsersGrid extends Grid implements UsersGridInterface
                 "data" => function($gridItem, $columnName) {
                     // $gridItem - column object
                     // $columnName - the name of this column (ie, name)
-                    return $gridItem->name.'qqq';
+                    return $gridItem->name;
                 },
                 "search" => [
 		            "enabled" => true
@@ -93,8 +99,10 @@ class UsersGrid extends Grid implements UsersGridInterface
 		        ]
             ],
 		    "custom" => [
+		        "label" => "Создать тест",
                 "raw" => true,
-                "data" => function($gridItem, $columnName) {return '<a onclick="alert(\'ok\')" href="/del/'.$gridItem->id.'">link</a>';},
+                // "data" => function($gridItem, $columnName) {return '<a onclick="alert(\'ok\')" href="/del/'.$gridItem->id.'">link</a>';},
+                "data" => function($gridItem, $columnName) {return qqq($gridItem->id);},
 		    ],
 		];
     }
