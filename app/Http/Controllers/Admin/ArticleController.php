@@ -9,7 +9,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App; 
-use App\Rule; 
+use App\Article; 
 
 class ArticleController extends Controller
 {
@@ -90,10 +90,10 @@ class ArticleController extends Controller
 
     public function savebody(Request $request) 
     {
-        DB::update("update articles set body = '".$request["body"]."' where id=".$request["id"]);
+        $article = Article::find($request["id"]);
+        $article->body = $request["body"];
+        $article->save();
+
         return redirect()->intended('admin/article');
-
     }
-
-
 }
