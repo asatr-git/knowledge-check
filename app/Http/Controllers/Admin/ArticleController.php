@@ -31,31 +31,35 @@ class ArticleController extends Controller
     {
         return view('admin.article', []);
     }
-    
+
+    public function getAjaxList(Request $request)
+    {
+        $result = [];
+      
+        $articles =DB::select("select * from articles");
+      
+        $article_object = new \stdClass();
+        $article_object->id = 0;
+        $article_object->name = "";
+        array_push($result, $article_object);
+
+        foreach ($articles as $article) {
+            $article_object = new \stdClass();
+            $article_object->id = (integer)$article->id;
+            $article_object->name = (string)$article->name;
+
+            array_push($result, $article_object);
+        }
+
+        header("Content-Type: application/json");
+        echo json_encode($result);
+    }
+
     public function getList(Request $request)
     {
-      $articles = DB::select("select * from articles order by sort_order");
-      header("Content-Type: application/json");
-      echo json_encode($articles);
-
-
-      return;  
-      $result = array();
-      
-      $rules = new Rule; 
-      $rule_list = $rules->getList();
-      
-      foreach ($rule_list as $rule) {
-        $rule_object = new \stdClass();
-        $rule_object->id = (string)$rule["id"];
-        $rule_object->title = (string)$rule->title;
-        $rule_object->description = (string)$rule->description;
-  
-        array_push($result, $rule_object);
-      }
-      
-      header("Content-Type: application/json");
-      echo json_encode($result);
+        $articles = DB::select("select * from articles order by sort_order");
+        header("Content-Type: application/json");
+        echo json_encode($articles);
     }
 
     public function getitem($id)
@@ -65,19 +69,11 @@ class ArticleController extends Controller
         return view('admin.article_form', [
             'article' => $article,
         ]);
-
-
-        // $item = Rule::getById($id);
-        return response()->json(array('message'=> 'ok', 'item'=> $item), 200);
     }
     
     public function delitem(Request $request)
     {
-
         DB::delete("delete from articles where id=".$request['id']);
-        // $rule = new Rule;
-        // $rule->delete($request['id']);        
-
         return response()->json(array('message'=> 'ok'), 200);
     }
 

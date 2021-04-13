@@ -50,7 +50,7 @@ class AdminLoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             // Authentication passed...
-            return redirect()->intended('admin/users');
+            return redirect()->intended('admin/user');
 //            print 'ok';
         }
 

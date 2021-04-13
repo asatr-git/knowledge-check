@@ -12,6 +12,8 @@
 */
 
 // Route::get('/', function () {    return view('welcome');});
+Route::get('/cleardb', 'CheckupController@cleardb');
+
 Route::get('/', 'HomeController@index');
 Route::get('/psw/{psw?}', 'HomeController@index');
 
@@ -24,13 +26,19 @@ Route::get('/question/psw/{psw?}', 'QuestionController@index');
 Route::post('/checkanswers', 'CheckupController@checkanswers');
 
 
-Route::redirect('/admin', '/admin/users');
 Route::get('/admin/login', 'Admin\AdminLoginController@index');
 Route::post('/admin/login', 'Admin\AdminLoginController@login');
-Route::get('/admin/users', 'Admin\UserController@index')->middleware('admin')->name('admin.users.index');
+
+
+Route::redirect('/admin', '/admin/user');
+Route::get('/admin/user', 'Admin\UserController@index')->middleware('admin')->name('admin.user.index');
+Route::get('/admin/user-getList', 'Admin\UserController@getList');
+Route::delete('/admin/user', 'Admin\UserController@delitem');
+Route::post('/admin/user', 'Admin\UserController@saveitem');
 
 Route::get('/admin/article', 'Admin\ArticleController@index');
 Route::get('/admin/article-getList', 'Admin\ArticleController@getList');
+Route::get('/admin/article-getAjaxList', 'Admin\ArticleController@getAjaxList');
 Route::get('/admin/article/{id}', 'Admin\ArticleController@getitem');
 Route::delete('/admin/article', 'Admin\ArticleController@delitem');
 Route::post('/admin/article', 'Admin\ArticleController@saveitem');

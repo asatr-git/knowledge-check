@@ -35,7 +35,7 @@ class QuestionController extends Controller
     
     public function getList(Request $request)
     {
-      $questions = DB::select("select * from questions order by sort_order");
+      $questions = DB::select("select * from questions order by article_id, sort_order");
       header("Content-Type: application/json");
       echo json_encode($questions);
     }
@@ -59,10 +59,10 @@ class QuestionController extends Controller
     public function saveitem(Request $request) 
     {
         if ($request["id"] > 0) {
-            DB::update("update questions set name = '".$request["name"]."', sort_order =".$request["sort_order"]." where id=".$request["id"]);
+            DB::update("update questions set name = '".$request["name"]."', article_id=".$request["article_id"].", sort_order =".$request["sort_order"]." where id=".$request["id"]);
         } else{
             $max_sort_order = DB::select("select max(sort_order) as max_sort_order from questions")[0]->max_sort_order + 10;
-            DB::insert("insert into questions (name, sort_order) values ('".$request["name"]."', ".$max_sort_order.")");
+            DB::insert("insert into questions (name, article_id, sort_order) values ('".$request["name"]."',".$request["article_id"].", ".$max_sort_order.")");
             // return redirect()->intended('admin/article');
         }
     }

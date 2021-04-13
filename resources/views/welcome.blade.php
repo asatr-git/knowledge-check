@@ -13,19 +13,17 @@
                 <div class="panel-heading">Инструкция по прохождению теста</div>
 
                 <div class="panel-body">
+                    <p><a href="http://knowledge-check/admin">Админка</a></p>
+                    <p><a href="http://knowledge-check/cleardb">Очистить базу</a></p>
                     <p>Администратор - login: admin@admin.com password: 123456</p>
-                    <p>Вход в админку  - пункт меню "Admin page"</p>
-                    <p>Ссылки на тесты - в админке.</p>
-                    <p>Пример теста: <a href="http://knowledge-check/psw/60731cef3cc2d">Пройти тест</a></p>
-
+                    <p></p>
                     <p>1. Нажмите кнопку "Начать тест".</p>
-                    <p>2. Прочитайте статью и нажмите "Далее".</p>
-                    <p>3. После прочтения всех статей система перейдет на страницу "Вопросы" .</p>
-                    <p>4. Ответьте на все вопросы и нажмите кнопку "Закончить тест".</p>
+                    <p>2. Прочтите статью, ответьте на вопросы и нажмите "Далее".</p>
+
                 </div>
             </div>
             @if ($user_name != '')
-                <a href="/psw/{{$psw}}/article/0"><button>Начать тест</button></a> 
+                <a href="/psw/{{$psw}}/article"><button>Начать тест</button></a> 
             @endif
         </div>
     </div>

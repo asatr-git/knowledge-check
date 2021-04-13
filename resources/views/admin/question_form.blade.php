@@ -37,8 +37,7 @@
       $("#jsGrid").jsGrid({
           width: "100%",
         //   height: "400px",
-   
-          filtering: true,
+        //   filtering: true,
           autoload: true,
           inserting: true,
           editing: true,

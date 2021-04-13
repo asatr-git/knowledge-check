@@ -2,7 +2,12 @@
 
 @section('content')
 
-<h5 style="margin-top: -30px;">Статьи</h5>
+<style>
+.completed {
+  color: green;
+}</style>
+
+<h5 style="margin-top: -30px;">Пользователи</h5>
   
 <div id="jsGrid"></div>
     
@@ -22,24 +27,21 @@
       $("#jsGrid").jsGrid({
           width: "100%",
         //   height: "400px",
-          // filtering: true,
+   
+        //   filtering: true,
           autoload: true,
           inserting: true,
           editing: true,
           sorting: true,
           paging: true,
           pageSize: 50,
-          deleteConfirm: "Удалить статью?",    
+          deleteConfirm: "Удалить пользователя?",    
           
-            // onItemInserted: function(args) {
-            //     $("#grid").jsGrid("loadData");
-            //     alert('onItemInserted');
-            // },          
           controller: {
               loadData: function(filter) {
                   return $.ajax({
                       type: "GET",
-                      url: "/admin/article-getList",
+                      url: "/admin/user-getList",
                       dataType: "json",
                       data: filter
                   });
@@ -48,9 +50,9 @@
                 $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}}) 
                 $.ajax({
                     type: "POST",
-                    url: "/admin/article",
+                    url: "/admin/user",
                     data: item
-                }).done(function(updatedItemReturnedFromServer) {
+                }).done(function(data) {
                     location.reload();
                 });
               },
@@ -59,7 +61,7 @@
                 //console.log(item);
                   return $.ajax({
                       type: "post",
-                      url: "/admin/article",
+                      url: "/admin/user",
                       data: item
                   });
               },
@@ -67,31 +69,34 @@
                   $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}}) 
                   return $.ajax({
                       type: "DELETE",
-                      url: "/admin/article",
+                      url: "/admin/user",
                       data: item
                   });
               }
           },
+        // rowRenderer: function(item) {
+        // var classStr = "";
+        // if (item.is_completed == 1) {
+        //     classStr = "completed";
+        // }
+        // var test = '<tr class="jsgrid-row ' + classStr + ' style="background:red !importent">' +
+        // '<td class="jsgrid-cell" style="width: 150px;">' + item.name + '</td>' +
+        // '<td class="jsgrid-cell" style="width: 100px;">' + item.email + '</td>' +
+        // '<td class="jsgrid-cell" style="width: 100px;">' + item.link + '</td>' +
+        // '<td class="jsgrid-cell" style="width: 100px;">' + item.last_activity + '</td>' +
+        // '<td class="jsgrid-cell" style="width: 100px;">' + item.wrong_attempts + '</td>' +
+        // '<td class="jsgrid-cell" style="width: 100px;">' + item.completed + '</td>' +
+        // '</tr>';
+        // return $(test)
+        // },
           fields: [
-              { name: "id", title: "Id", type: "number", width: 20, readOnly: true},
-              { name: "name", title: "Название", type: "text", width: 100},
-              { name: "sort_order", title: "Сортировка", type: "number", width: 20},
-              { type: "control", width: 10, editButton: false, 
-                 itemTemplate: function(value, item) {
-                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-
-                    var $customEditButton = $("<button>").attr({class: "customGridEditbutton jsgrid-button jsgrid-edit-button"})
-                      .click(function(e) {
-                        // alert("ID: " + item.id);
-                         document.location.href = "article/" + item.id;
-                        //  document.location.href = item.id + "/edit";
-                        e.stopPropagation();
-                      });
-
-                    // return $("<div>").append($customEditButton).append($customDeleteButton);
-                     return $result.add($customEditButton);
-                },
-            }
+              { name: "name", title: "Имя", type: "text", width: 5},
+              { name: "email", title: "Email", type: "text", width: 20},
+              { name: "link", title: "Ссылка", type: "text", width: 30, readOnly: true},
+              { name: "last_activity", title: "Последняя активность", type: "text", width: 5, readOnly: true},
+              { name: "wrong_attempts", title: "Неудачных попыток", type: "text", width: 5, readOnly: true},
+              { name: "completed", title: "Пройдено статей", type: "text", width: 5, readOnly: true},
+              { type: "control", width: 10,  editButton: false,}
         ]
       });
       

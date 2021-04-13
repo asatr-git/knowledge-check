@@ -18,7 +18,7 @@ class UsersGrid extends Grid implements UsersGridInterface
 
     public function getGridPaginationPageSize(): int
     {
-        return 5;
+        return 20;
     } 
 
     /**
@@ -27,9 +27,9 @@ class UsersGrid extends Grid implements UsersGridInterface
      * @var array
      */
     protected $buttonsToGenerate = [
-        //'create',
+        // 'create',
         //'view',
-        //'delete',
+        // 'delete',
         //'refresh',
         //'export'
     ];
@@ -47,6 +47,7 @@ class UsersGrid extends Grid implements UsersGridInterface
     * @return void
     * @throws \Exception if an error occurs during parsing of the data
     */
+
     public function setColumns()
     {
         function qqq($userId){

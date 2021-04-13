@@ -2,27 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App; 
-use App\Grids\UsersGrid; 
-use App\User; 
+use App\Rule; 
 
 class UserController extends Controller
 {
     /**
-     * The task repository instance.
-     *
-     * @var TaskRepository
-     */
-
-    /**
-     * Create a new controller instance.
-     *
-     * @param  TaskRepository  $tasks
      * @return void
      */
     public function __construct()
@@ -32,21 +23,45 @@ class UserController extends Controller
     }
 
     /**
-     * Display a list of all of the user's task.
      *
      * @param  Request  $request
      * @return Response
      */
     public function index(Request $request)
     {
-        //dd(User::query());
-        return (new UsersGrid())
-        ->create(['pagination1' => "2", 'query' => User::query(), 'request' => $request])
-        ->renderOn('admin.users');    
+        return view('admin.user', [
+        ]);
+    }
+    
+    public function getList(Request $request)
+    {
+      $articles_cnt = DB::select("select count(*) as cnt from articles")[0]->cnt;  
+      $checkups = DB::select("
+        SELECT u.*, c.last_activity, c.is_completed, c.wrong_attempts, 
+            concat(articles_completed, '/',".$articles_cnt.") as completed,
+            concat('http://knowledge-check/psw/', c.psw) as link  
+            FROM  users u  left join checkups c on c.user_id=u.id 
+            order by c.created_at desc");
 
-        $qqq= (new UsersGrid())
-        ->create(['query' => User::query(), 'request' => $request]);
-        var_dump($qqq->getData());
+        header("Content-Type: application/json");
+        echo json_encode($checkups);
+    }
+
+    public function delitem(Request $request)
+    {
+        DB::delete("delete from users where is_admin<>1 and id=".$request['id']);
+        return response()->json(array('message'=> 'ok'), 200);
+    }
+
+    public function saveitem(Request $request) 
+    {
+        if ($request["id"] > 0) {
+            DB::update("update users set name = '".$request["name"]."', email=".$request["email"]." where id=".$request["id"]);
+        } else{
+            DB::insert("insert into users (password, name, email) values ('psw', '".$request["name"]."', '".$request["email"]."')");
+            $last_id = DB::select("select max(id) as last_id from users")[0]->last_id;
+            DB::insert("insert into checkups (user_id, psw) values (".$last_id.", '".uniqid()."')");
+        }
     }
 
 }
