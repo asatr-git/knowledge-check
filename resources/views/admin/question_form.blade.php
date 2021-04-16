@@ -7,6 +7,7 @@
         <div class="col-md-12 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading"><h4>Ответы к вопросу {{$question[0]->name}}</h1></div>
+                <a href="/admin/answer-bulkadd/{{$question[0]->id}}">Создать ответы</a>
                 <div class="panel-body">
                     <div id="jsGrid"></div>
                 </div>

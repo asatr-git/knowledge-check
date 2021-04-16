@@ -22,6 +22,18 @@ class UserController extends Controller
 
     }
 
+
+    public function cleardb(Request $request)
+    {
+        DB::delete("delete from checkups");
+        DB::delete("delete from articles");
+        DB::delete("delete from answers");
+        DB::delete("delete from questions");
+        DB::delete("delete from users where is_admin<>1");
+
+        return redirect()->intended("/admin");
+    }
+
     /**
      *
      * @param  Request  $request
@@ -35,11 +47,12 @@ class UserController extends Controller
     
     public function getList(Request $request)
     {
+      $server_name = $request->getHttpHost();  
       $articles_cnt = DB::select("select count(*) as cnt from articles")[0]->cnt;  
       $checkups = DB::select("
         SELECT u.*, c.last_activity, c.is_completed, c.wrong_attempts, 
             concat(articles_completed, '/',".$articles_cnt.") as completed,
-            concat('http://knowledge-check/psw/', c.psw) as link  
+            concat('http://".$server_name."/psw/', c.psw) as link  
             FROM  users u  left join checkups c on c.user_id=u.id 
             order by c.created_at desc");
 

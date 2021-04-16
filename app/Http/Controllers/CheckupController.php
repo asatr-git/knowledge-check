@@ -15,19 +15,6 @@ use App\Log;
 
 class CheckupController extends Controller
 {
-    public function cleardb(Request $request)
-    {
-        $first_article = DB::select("select * from articles order by sort_order limit 1");
-        DB::delete("delete from checkups");
-        DB::delete("delete from articles");
-        DB::delete("delete from answers");
-        DB::delete("delete from questions");
-        DB::delete("delete from users where is_admin<>1");
-
-        return redirect()->intended("/");
-    }
-
-
     /**
      * Display a list of all of the user's task.
      *

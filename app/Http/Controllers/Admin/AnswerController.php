@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App; 
-use App\Rule; 
+use App\Answer;
+use App\Article;
 
 class AnswerController extends Controller
 {
@@ -58,6 +60,13 @@ class AnswerController extends Controller
 
     public function saveitem(Request $request) 
     {
+        // $answer = new Answer;
+
+        // $answer->name = $request["name"];
+        // $answer->question_id = $request["question_id"];
+        // $max_sort_order = DB::select("select max(sort_order) as max_sort_order from answers")[0]->max_sort_order + 10;
+        // $answer->sort_order = $max_sort_order;
+        // $answer->save();        
         if ($request["id"] > 0) {
             DB::update("update answers set name = '".$request["name"]."', is_right=".$request["is_right"].", sort_order =".$request["sort_order"]." where id=".$request["id"]);
         } else{
@@ -65,6 +74,33 @@ class AnswerController extends Controller
             DB::insert("insert into answers (name, question_id, sort_order) values ('".$request["name"]."', ".$request["question_id"].", ".$max_sort_order.")");
             // return redirect()->intended('admin/article');
         }
+    }
+
+    public function bulkadd($question_id)
+    {
+        $question = DB::table('questions')->where('id', $question_id)->first();
+
+        return view('admin.answer_bulkadd', [
+            'question' => $question,
+        ]);
+    }
+
+    public function bulksave(Request $request)
+    {
+        $post = $request->all();
+        $question_id = $post['question_id'];
+        foreach ($post as $key => $value) {
+            if (!Str::contains($key, 'answer_name')) {
+                continue;
+            }
+            if($value != ''){
+                $max_sort_order = DB::select("select max(sort_order) as max_sort_order from answers")[0]->max_sort_order + 10;
+                DB::table('answers')->insert(
+                    ['question_id' => $question_id, 'name' => $value, 'sort_order' => $max_sort_order]
+                );            
+            }
+        }
+        return redirect()->intended('admin/question/'.$question_id);
     }
 
 }

@@ -3,7 +3,7 @@
 @section('content')
 
 <h5 style="margin-top: -30px;">Вопросы</h5>
-  
+  <a href="question-bulkadd">Создать вопросы</a>
 <div id="jsGrid"></div>
     
 @endsection
@@ -76,7 +76,7 @@
             fields: [
                 { name: "id", title: "Id", type: "number", width: 20, readOnly: true},
                 { name: "article_id", title: "Статья", type: "select", width: 100, items: articles, valueField: "id", textField: "name" },
-                { name: "name", title: "Название", type: "text", width: 100},
+                { name: "name", title: "Вопрос", type: "text", width: 100},
                 { name: "sort_order", title: "Сорт.", type: "number", width: 20},
                 { type: "control", width: 10, editButton: false, 
                   itemTemplate: function(value, item) {

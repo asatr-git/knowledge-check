@@ -12,7 +12,7 @@
 */
 
 // Route::get('/', function () {    return view('welcome');});
-Route::get('/cleardb', 'CheckupController@cleardb');
+Route::get('admin/cleardb', 'Admin\UserController@cleardb');
 
 Route::get('/', 'HomeController@index');
 Route::get('/psw/{psw?}', 'HomeController@index');
@@ -46,6 +46,8 @@ Route::post('/admin/article-body', 'Admin\ArticleController@savebody');
 
 Route::get('/admin/question', 'Admin\QuestionController@index');
 Route::get('/admin/question-getList', 'Admin\QuestionController@getList');
+Route::get('/admin/question-bulkadd', 'Admin\QuestionController@bulkadd');
+Route::post('/admin/question-bulkadd', 'Admin\QuestionController@bulksave');
 Route::get('/admin/question/{id}', 'Admin\QuestionController@getitem');
 Route::delete('/admin/question', 'Admin\QuestionController@delitem');
 Route::post('/admin/question', 'Admin\QuestionController@saveitem');
@@ -53,6 +55,8 @@ Route::post('/admin/question', 'Admin\QuestionController@saveitem');
 Route::get('/admin/answer-getList/{question_id}', 'Admin\AnswerController@getList');
 Route::delete('/admin/answer', 'Admin\AnswerController@delitem');
 Route::post('/admin/answer', 'Admin\AnswerController@saveitem');
+Route::get('/admin/answer-bulkadd/{question_id}', 'Admin\AnswerController@bulkadd');
+Route::post('/admin/answer-bulkadd', 'Admin\AnswerController@bulksave');
 
 Route::get('/admin/checkup', 'Admin\CheckupController@index');
 Route::get('/admin/checkup-getList', 'Admin\CheckupController@getList');

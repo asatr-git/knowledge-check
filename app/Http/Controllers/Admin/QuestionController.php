@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App; 
-use App\Rule; 
 
 class QuestionController extends Controller
 {
@@ -67,11 +66,30 @@ class QuestionController extends Controller
         }
     }
 
-    public function savebody(Request $request) 
+    public function bulkadd(Request $request)
     {
-        DB::update("update articles set body = '".$request["body"]."' where id=".$request["id"]);
-        return redirect()->intended('admin/article');
+        $articles = DB::table('articles')->select('id', 'name')->get();
+        return view('admin.question_bulkadd', [
+            'articles' => $articles,
+        ]);
+    }
 
+    public function bulksave(Request $request)
+    {
+        $post = $request->all();
+        $article_id = $post['article_id'];
+        foreach ($post as $key => $value) {
+            if (!Str::contains($key, 'question_name')) {
+                continue;
+            }
+            if($value != ''){
+                $max_sort_order = DB::select("select max(sort_order) as max_sort_order from questions")[0]->max_sort_order + 10;
+                DB::table('questions')->insert(
+                    ['article_id' => $article_id, 'name' => $value, 'sort_order' => $max_sort_order]
+                );            
+            }
+        }
+        return redirect()->intended('admin/question');
     }
 
 

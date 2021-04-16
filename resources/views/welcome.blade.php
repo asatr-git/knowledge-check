@@ -13,13 +13,8 @@
                 <div class="panel-heading">Инструкция по прохождению теста</div>
 
                 <div class="panel-body">
-                    <p><a href="http://knowledge-check/admin">Админка</a></p>
-                    <p><a href="http://knowledge-check/cleardb">Очистить базу</a></p>
-                    <p>Администратор - login: admin@admin.com password: 123456</p>
-                    <p></p>
                     <p>1. Нажмите кнопку "Начать тест".</p>
                     <p>2. Прочтите статью, ответьте на вопросы и нажмите "Далее".</p>
-
                 </div>
             </div>
             @if ($user_name != '')
