@@ -89,17 +89,15 @@ class AnswerController extends Controller
     {
         $post = $request->all();
         $question_id = $post['question_id'];
-        foreach ($post as $key => $value) {
-            if (!Str::contains($key, 'answer_name')) {
-                continue;
-            }
-            if($value != ''){
-                $max_sort_order = DB::select("select max(sort_order) as max_sort_order from answers")[0]->max_sort_order + 10;
-                DB::table('answers')->insert(
-                    ['question_id' => $question_id, 'name' => $value, 'sort_order' => $max_sort_order]
-                );            
-            }
+        $answers = mb_split('\n', $post['answers']);
+
+        foreach ($answers as $answer) {
+            $max_sort_order = DB::select("select max(sort_order) as max_sort_order from answers")[0]->max_sort_order + 10;
+            DB::table('answers')->insert(
+                ['question_id' => $question_id, 'name' => $answer, 'sort_order' => $max_sort_order]
+            );            
         }
+
         return redirect()->intended('admin/question/'.$question_id);
     }
 

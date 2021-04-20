@@ -21,14 +21,12 @@
                             </div>
                         </div>
 
-                        @for ($i = 0; $i < 5; $i++) 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Вопрос</label>
+                            <label class="col-md-4 control-label">Вопросы</label>
                             <div class="col-md-12">
-                                <textarea class="form-control" name="question_name{{$i}}" cols="150" rows="2"></textarea>
+                                <textarea class="form-control" name="questions" cols="150" rows="10"></textarea>
                             </div>
                         </div>
-                        @endfor
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">

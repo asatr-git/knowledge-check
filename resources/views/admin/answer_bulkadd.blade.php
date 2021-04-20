@@ -11,14 +11,12 @@
                         {!! csrf_field() !!}
                         <input type="hidden" name="question_id" value="{{$question->id}}">
 
-                        @for ($i = 0; $i < 5; $i++) 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Ответ</label>
+                            <label class="col-md-4 control-label">Ответы</label>
                             <div class="col-md-12">
-                                <textarea class="form-control" name="answer_name{{$i}}" cols="150" rows="2"></textarea>
+                                <textarea class="form-control" name="answers" cols="150" rows="10"></textarea>
                             </div>
                         </div>
-                        @endfor
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
